@@ -2,9 +2,14 @@ import { useMemo } from "react";
 
 export const useSortedPosts = (posts, sort) => {
   const sortedPosts = useMemo(() => {
-    console.log("OTR");
-    if (sort) {
+    // console.log("OTR");
+
+    if (sort && sort !== "liked") {
+      console.log(sort);
       return [...posts].sort((a, b) => a[sort].localeCompare(b[sort]));
+    } else if (sort === "liked") {
+      console.log("Ты тут");
+      return posts.filter((post) => post.liked);
     }
     return posts;
   }, [sort, posts]);

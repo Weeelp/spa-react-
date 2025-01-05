@@ -2,7 +2,7 @@ import React, { createRef } from "react";
 import PostItem from "./PostItem";
 import { CSSTransition, TransitionGroup } from "react-transition-group";
 
-const PostList = ({ posts, title, remove }) => {
+const PostList = ({ posts, title, remove, setLike }) => {
   if (!posts.length) {
     return <h1 style={{ textAlign: "center" }}>Посты не найдены!</h1>;
   }
@@ -10,7 +10,7 @@ const PostList = ({ posts, title, remove }) => {
   return (
     <div>
       <h1 style={{ textAlign: "center" }}>{title}</h1>
-      <TransitionGroup>
+      <TransitionGroup className="post__list">
         {posts.map((post, index) => {
           const nodeRef = createRef(); // Создание ref для CSSTransition
           return (
@@ -22,6 +22,7 @@ const PostList = ({ posts, title, remove }) => {
             >
               <div ref={nodeRef}>
                 <PostItem
+                  setLike={setLike}
                   remove={remove}
                   number={index + 1}
                   post={post}

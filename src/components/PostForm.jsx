@@ -3,7 +3,7 @@ import MyButton from "./UI/button/MyButton";
 import MyInput from "./UI/input/MyInput";
 
 const PostForm = ({ create }) => {
-  const [post, setPost] = useState({ title: "", body: "" });
+  const [post, setPost] = useState({ title: "", body: "", url: "" });
 
   const addNewPost = (e) => {
     e.preventDefault();
@@ -12,12 +12,11 @@ const PostForm = ({ create }) => {
       id: Date.now(),
     };
     create(newPost);
-    setPost({ title: "", body: "" });
+    setPost({ title: "", body: "", url: "" });
   };
 
   return (
     <form>
-      {/* Управляемый компонент */}
       <MyInput
         value={post.title}
         onChange={(e) => setPost({ ...post, title: e.target.value })}
@@ -30,13 +29,13 @@ const PostForm = ({ create }) => {
         type="text"
         placeholder="Описание"
       ></MyInput>
-      {/* \\Неконтролируемый компонент
-        <MyInput
-          ref={bodyInputRef}
-          type="text"
-          placeholder="Описание"
-        ></MyInput> */}
-      <MyButton onClick={addNewPost}>Создать пост</MyButton>
+      <MyInput
+        value={post.url}
+        onChange={(e) => setPost({ ...post, url: e.target.value })}
+        type="url"
+        placeholder="URL"
+      ></MyInput>
+      <MyButton onClick={addNewPost}>Создать карточку</MyButton>
     </form>
   );
 };

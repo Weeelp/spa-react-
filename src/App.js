@@ -9,16 +9,26 @@ import Loader from "./components/UI/Loader/Loader";
 import { usePosts } from "./hooks/usePost";
 import { useFetching } from "./hooks/useFetching";
 import PostService from "./API/PostService";
+import { getPagesCount } from "./components/utils/pages";
+import { usePagination } from "./hooks/usePagination";
+import MyInput from "./components/UI/input/MyInput";
 
 function App() {
   const [posts, setPosts] = useState([]);
   const [filter, setFilter] = useState({ sort: "", query: "" });
   const [modal, setModal] = useState(false);
+  const [totalPages, setTotalPages] = useState(0);
+  const [limit, setLimit] = useState(10);
+  const [page, setPage] = useState(1);
   const sortedAndSerachedPosts = usePosts(posts, filter.sort, filter.query);
   const [fetchPosts, isPostsLoading, postError] = useFetching(async () => {
-    const posts = await PostService.getAll();
-    setPosts(posts);
+    const response = await PostService.getAll(limit, page);
+    setPosts(response.data);
+    const totalCount = response.headers["x-total-count"];
+    setTotalPages(getPagesCount(totalCount, limit));
   });
+
+  const pagesArray = usePagination(totalPages);
 
   useEffect(() => {
     fetchPosts();
@@ -33,10 +43,19 @@ function App() {
     setPosts(posts.filter((p) => p.id !== post.id));
   };
 
+  const setLikeOnPost = (like, post) => {
+    if (like.contains("active")) {
+      like.remove("active");
+    } else if (!like.contains("active")) {
+      like.add("active");
+    }
+    post.liked = !post.liked;
+  };
+
   return (
     <div className="App">
       <MyButton style={{ marginTop: "30px" }} onClick={() => setModal(true)}>
-        Создать пользователя
+        Создать карточку
       </MyButton>
       <MyModal visible={modal} setVisible={setModal}>
         <PostForm create={createPost} />
@@ -59,11 +78,24 @@ function App() {
         </div>
       ) : (
         <PostList
+          setLike={setLikeOnPost}
           remove={removePost}
           posts={sortedAndSerachedPosts}
-          title="1 Список постов 1"
+          title="Список карточек"
         />
       )}
+
+      {
+        <div className="page__wrapper">
+          <h1 className="page__title">введите страницу:</h1>
+          <MyInput
+            type="number"
+            min={0}
+            max={totalPages}
+            style={{ width: "200px" }}
+          ></MyInput>
+        </div>
+      }
     </div>
   );
 }
