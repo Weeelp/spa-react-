@@ -1,0 +1,14 @@
+{
+  "files": {
+    "main.css": "/Weeelp/spa-react-/static/css/main.4149877e.css",
+    "main.js": "/Weeelp/spa-react-/static/js/main.a907ca8f.js",
+    "static/media/img-320593.svg": "/Weeelp/spa-react-/static/media/img-320593.ebb13155ab3a6a4af924808f1c3bfd38.svg",
+    "index.html": "/Weeelp/spa-react-/index.html",
+    "main.4149877e.css.map": "/Weeelp/spa-react-/static/css/main.4149877e.css.map",
+    "main.a907ca8f.js.map": "/Weeelp/spa-react-/static/js/main.a907ca8f.js.map"
+  },
+  "entrypoints": [
+    "static/css/main.4149877e.css",
+    "static/js/main.a907ca8f.js"
+  ]
+}
