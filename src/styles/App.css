@@ -25,6 +25,7 @@
   margin: 15px 0;
   border: 2px solid teal;
 
+  height: auto;
   width: 100%;
   display: flex;
   flex-direction: column;
@@ -119,7 +120,6 @@
 }
 
 .post__form {
-  margin-top: 30px;
   padding: 25px;
   border: solid teal 2px;
   width: 600px;

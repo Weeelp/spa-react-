@@ -1,5 +1,4 @@
 import React, { useState, useEffect } from "react";
-// import "../styles/App";
 import PostList from "../components/PostList";
 import PostFilter from "../components/PostFilter";
 import Loader from "../components/UI/Loader/Loader";
@@ -8,6 +7,16 @@ import { useFetching } from "../hooks/useFetching";
 import PostService from "../API/PostService";
 import { getPagesCount } from "../components/utils/pages";
 import Pagination from "../components/UI/pagination/Pagination";
+import MyModal from "../components/UI/MyModal/MyModal";
+import MyButton from "../components/UI/button/MyButton";
+import PostForm from "../components/PostForm";
+
+// import { useDispatch, useSelector } from "react-redux";
+// import {
+//   addManyPostsData,
+//   createPostsData,
+//   removePostsData,
+// } from "../store/postReducer";
 
 function Products() {
   const [posts, setPosts] = useState([]);
@@ -24,30 +33,60 @@ function Products() {
     setTotalPages(getPagesCount(totalCount, limit));
   });
 
+  // const dispatch = useDispatch();
+  // const selector = useSelector((state) => {
+  //   return state.post.posts;
+  // });
+  // const [fetchPostsData, isPostsLoadingData, postErrorData] = useFetching(
+  //   async () => {
+  //     const respStore = await PostService.getAllData();
+  //     // console.log(typeof respStore, respStore.data);
+  //     dispatch(addManyPostsData(respStore.data));
+  //   }
+  // );
+  // useEffect(() => {
+  //   fetchPostsData();
+  // }, []);
+
   useEffect(() => {
     fetchPosts();
-    console.log("ЩЕК");
   }, [page]);
 
   const changePage = (page) => {
     setPage(page);
   };
 
+  const createPost = (newPost) => {
+    setPosts([newPost, ...posts]);
+    setModal(false);
+  };
+
   const removePost = (post) => {
-    setPosts(posts.filter((p) => p.id !== post.id));
+    setPosts(
+      posts.filter((p) => {
+        // dispatch(removePostsData(p.id));
+        return p.id !== post.id;
+      })
+    );
   };
 
   const setLikeOnPost = (like, post) => {
-    if (like.contains("active")) {
-      like.remove("active");
-    } else if (!like.contains("active")) {
-      like.add("active");
-    }
+    like.toggle("active");
+
     post.liked = !post.liked;
   };
 
   return (
     <div className="App">
+      {/* <div>
+        {selector.map((p) => (
+          <div key={p.id}>{p.title}</div>
+        ))}
+      </div> */}
+      <MyButton onClick={() => setModal(true)}>Создать карту</MyButton>
+      <MyModal visible={modal} setVisible={setModal}>
+        <PostForm create={createPost} />
+      </MyModal>
       <hr style={{ margin: "15px 0" }} />
       <PostFilter filter={filter} setFilter={setFilter} />
 
